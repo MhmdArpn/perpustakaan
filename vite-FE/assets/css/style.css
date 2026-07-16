@@ -424,12 +424,12 @@ a {
 .search {
     display: flex;
     align-items: center;
-    padding: 11px 18px;
     background: white;
+    /*padding: 11px 18px;
     border-radius: 12px;
     gap: 10px;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-    border: 1px solid #E2E8F0;
+    border: 1px solid #E2E8F0;*/
 }
 
 .search i {

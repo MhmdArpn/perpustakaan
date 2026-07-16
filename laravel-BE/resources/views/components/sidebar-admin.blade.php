@@ -2,7 +2,7 @@
     <div class="brand">
         <div class="logo">📚</div>
         <div>
-            <h3>ADMIN</h3>
+            <h3>{{ Auth::user()->name }}</h3>
             <p>Sistem Perpustakaan Online</p>
         </div>
     </div>
