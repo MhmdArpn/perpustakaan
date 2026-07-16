@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LoanController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/member');
@@ -41,9 +42,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'destroy'   => 'admin.categories.destroy',
         ]);
 
-        Route::get('/peminjaman', function () {
-            return view('admin.peminjaman');
-        })->name('admin.loans');
+        Route::resource('peminjaman', LoanController::class)->names([
+            'index'   => 'admin.loans',
+            'store'   => 'admin.loans.store',
+            'update'  => 'admin.loans.update',
+            'destroy' => 'admin.loans.destroy',
+        ]);
 
         Route::get('/pengembalian', function () {
             return view('admin.pengembalian');
