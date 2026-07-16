@@ -74,9 +74,9 @@
 
         <div class="quick">
             <h3>Quick Action</h3>
-            <button>Tambah Buku</button>
-            <button>Tambah Member</button>
-            <button>Cetak Laporan</button>
+            <a href="{{ route('admin.books') }}"><button>Tambah Buku</button></a>
+            <a href="{{ route('admin.categories') }}"><button>Tambah Member</button></a>
+            <a href="#"><button>Cetak Laporan</button></a>
         </div>
     </div>
 @endsection
