@@ -15,6 +15,8 @@ class Category extends Model
         'is_active',
     ];
 
+    protected $table = 'categories';
+
     public function books()
     {
         return $this->hasMany(Book::class);

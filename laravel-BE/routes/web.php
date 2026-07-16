@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/member');
@@ -33,9 +34,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'destroy'   => 'admin.books.destroy',
         ]);
 
-        Route::get('/kategori', function () {
-            return view('admin.kategori');
-        })->name('admin.categories');
+        Route::resource('kategori', CategoryController::class)->names([
+            'index'     => 'admin.categories',
+            'store'     => 'admin.categories.store',
+            'update'    => 'admin.categories.update',
+            'destroy'   => 'admin.categories.destroy',
+        ]);
 
         Route::get('/peminjaman', function () {
             return view('admin.peminjaman');
