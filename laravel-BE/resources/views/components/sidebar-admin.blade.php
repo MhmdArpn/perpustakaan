@@ -1,6 +1,6 @@
 <div class="sidebar">
     <div class="brand">
-        <div class="logo">📚</div>
+        <div class="logo"><i class="fa-solid fa-book-open"></i></div>
         <div>
             <h3>{{ Auth::user()->name }}</h3>
             <p>Sistem Perpustakaan Online</p>

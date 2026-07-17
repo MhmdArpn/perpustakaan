@@ -5,9 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\ReturnController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/member');
+Route::redirect('/', '/admin');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showUserLogin'])->name('login');
@@ -49,9 +50,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'destroy' => 'admin.loans.destroy',
         ]);
 
-        Route::get('/pengembalian', function () {
-            return view('admin.pengembalian');
-        })->name('admin.returns');
+        Route::resource('pengembalian', ReturnController::class)->names([
+            'index'   => 'admin.returns',
+            'store'   => 'admin.returns.store',
+            'update'  => 'admin.returns.update',
+            'destroy' => 'admin.returns.destroy',
+        ]);
 
         Route::get('/denda', function () {
             return view('admin.denda');
