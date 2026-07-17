@@ -4,20 +4,10 @@
 
 @section('page-title')
     <h1 style="margin: 0; font-size: 1.5rem; color: #333;">Kategori</h1>
+    <p class="page-label" style="margin: 0; color: #777; font-size: 0.9rem;">Jelajahi kategori favoritmu dan temukan pengetahuan baru</p>
 @endsection
 
 @section('content')
-<!-- HEADER HALAMAN -->
-<div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-    <div>
-        <p class="page-label" style="margin: 0; color: #777; font-size: 0.9rem;">Kategori Buku</p>
-        <h1 style="margin: 4px 0 0 0; font-size: 1.8rem;">Jelajahi kategori favoritmu dan temukan pengetahuan baru</h1>
-    </div>
-    <a href="{{ route('user.dashboard') }}" class="btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-arrow-left"></i>
-        Kembali
-    </a>
-</div>
 
 <!-- BARIS KATEGORI (Dinamis dari Database) -->
 <div class="category-row" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-bottom: 40px;">

@@ -29,4 +29,38 @@ class DashboardUserController extends Controller
 
         return view('member.dashboard', compact('categories', 'popularBooks', 'borrowLogs'));
     }
+
+    public function pinjamBuku($id)
+    {
+        $book = Book::findOrFail($id);
+
+        // 1. Validasi: Apakah stok buku masih ada?
+        if ($book->qty <= 0) {
+            return redirect()->back()->with('error', 'Maaf, stok buku ini sudah habis!');
+        }
+
+        // 2. Validasi Opsional: Apakah user sedang meminjam buku ini dan belum dikembalikan?
+        $isAlreadyBorrowed = BorrowLog::where('user_id', Auth::id())
+            ->where('book_id', $id)
+            ->where('status', 'dipinjam')
+            ->exists();
+
+        if ($isAlreadyBorrowed) {
+            return redirect()->back()->with('error', 'Anda masih meminjam buku ini!');
+        }
+
+        // 3. Kurangi stok buku
+        $book->decrement('qty');
+
+        // 4. Buat riwayat peminjaman baru
+        BorrowLog::create([
+            'user_id' => Auth::id(),
+            'book_id' => $id,
+            'created_at' => Carbon::now(),
+            'due_at' => Carbon::now()->addDays(7), // Durasi pinjam standar: 7 hari
+            'status' => 'dipinjam',
+        ]);
+
+        return redirect()->back()->with('success', 'Buku "' . $book->title . '" berhasil dipinjam!');
+    }
 }
