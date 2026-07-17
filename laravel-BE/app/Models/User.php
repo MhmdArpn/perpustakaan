@@ -24,6 +24,8 @@ class User extends Authenticatable
         'password',
         'role',
         'phone',
+        'status',
+        'membership_type',
         'address',
         'api_token',
     ];

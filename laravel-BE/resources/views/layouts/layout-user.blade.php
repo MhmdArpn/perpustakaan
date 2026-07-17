@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Dashboard') - Perpustakaan</title>
+    <title>@yield('title', 'Member Dashboard') - Perpustakaan</title>
 
     @vite(['src/main.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -12,7 +12,7 @@
 
 <body>
 
-    @include('components.sidebar-admin')
+    @include('components.sidebar-user')
 
     <!-- Main Container -->
     <div class="main">
@@ -29,16 +29,15 @@
                     <input type="text" id="menuSearch" list="systemMenus"
                         placeholder="Cari menu sistem (Dashboard, Buku...)"
                         style="padding-left: 35px; width: 100%; border: 1px solid #ddd; border-radius: 20px; height: 35px;">
-                    <!-- Daftar menu sistem admin -->
+                    <!-- Daftar menu sistem user -->
                     <datalist id="systemMenus">
-                        <option value="Dashboard" data-url="{{ route('admin.dashboard') }}">
-                        <option value="Data Buku" data-url="{{ route('admin.books') }}">
-                        <option value="Kategori Buku" data-url="{{ route('admin.categories') }}">
-                        <option value="Peminjaman" data-url="{{ route('admin.loans') }}">
-                        <option value="Pengembalian" data-url="{{ route('admin.returns') }}">
-                        <option value="Data Member" data-url="{{ route('admin.members') }}">
-                        <option value="Denda" data-url="{{ route('admin.fines') }}">
-                        <option value="Laporan" data-url="{{ route('admin.reports') }}">
+                        <option value="Dashboard" data-url="{{ route('user.dashboard') }}">
+                        <option value="Cari Buku" data-url="#">
+                        <option value="Kategori Buku" data-url="#">
+                        <option value="Peminjaman Saya" data-url="#">
+                        <option value="Riwayat" data-url="#">
+                        <option value="Wishlist" data-url="#">
+                        <option value="Profile" data-url="#">
                     </datalist>
                 </div>
 
