@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Loan;
+use App\Models\Report;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -82,6 +83,20 @@ class LoanController extends Controller
             'status' => 'dipinjam',
             'notes' => $request->notes,
         ]);
+        $today = Carbon::today()->toDateString();
+
+        $totalBukuHariIni = Loan::whereDate('created_at', $today)->count();
+
+        Report::updateOrCreate(
+            [
+                'type' => 'peminjaman',
+                'report_date' => $today,
+            ],
+            [
+                'total_summary' => $totalBukuHariIni . ' Buku Dipinjam',
+                'status' => 'selesai'
+            ]
+        );
 
         // Kurangi stok buku yang tersedia
         $book->decrement('available_copies');

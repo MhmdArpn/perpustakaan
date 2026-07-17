@@ -2,27 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Fine extends Model
 {
-    use HasFactory;
+    protected $fillable = ['user_id', 'book_id', 'late_days', 'amount', 'status', 'notes'];
 
-    protected $fillable = [
-        'loan_id',
-        'amount',
-        'status',
-        'paid_at',
-        'description',
-    ];
-
-    protected $casts = [
-        'paid_at' => 'date',
-    ];
-
-    public function loan()
+    public function user()
     {
-        return $this->belongsTo(Loan::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function book()
+    {
+        return $this->belongsTo(Book::class);
     }
 }

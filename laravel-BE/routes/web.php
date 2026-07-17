@@ -3,8 +3,18 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookSearchController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FineController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\Member\CategoryUserController;
+use App\Http\Controllers\Member\DashboardUserController;
+use App\Http\Controllers\Member\HistoryUserController;
+use App\Http\Controllers\Member\LoanUserController;
+use App\Http\Controllers\Member\WishlistUserController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProfileUserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReturnController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +30,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware(['auth', 'role:member'])->group(function () {
     Route::prefix('member')->group(function () {
-        
+        Route::get('/', [DashboardUserController::class, 'index'])->name('user.dashboard');
+        Route::get('/cari-buku', [BookSearchController::class, 'index'])->name('user.cari-buku');
+        Route::get('/kategori', [CategoryUserController::class, 'index'])->name('user.kategori');
+        Route::get('/peminjaman', [LoanUserController::class, 'index'])->name('user.peminjaman');
+        Route::post('/pinjam/{id}', [DashboardUserController::class, 'pinjamBuku'])->name('user.pinjam');
+        Route::get('/riwayat', [HistoryUserController::class, 'index'])->name('user.riwayat');
+        Route::get('/wishlist', [WishlistUserController::class, 'index'])->name('user.wishlist');
+        Route::get('/profile', [ProfileUserController::class, 'index'])->name('user.profile');
+        Route::put('/profile', [ProfileUserController::class, 'update'])->name('user.profile.update');
+        Route::patch('/profile/password', [ProfileUserController::class, 'updatePassword'])->name('user.profile.update-password');
     });
 });
 
@@ -57,16 +76,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'destroy' => 'admin.returns.destroy',
         ]);
 
-        Route::get('/denda', function () {
-            return view('admin.denda');
-        })->name('admin.fines');
+        Route::resource('member', MemberController::class)->names([
+            'index'   => 'admin.members',
+            'store'   => 'admin.members.store',
+            'update'  => 'admin.members.update',
+            'destroy' => 'admin.members.destroy',
+        ]);
 
-        Route::get('/member', function () {
-            return view('admin.member');
-        })->name('admin.members');
+        Route::resource('denda', FineController::class)->names([
+            'index'   => 'admin.fines',
+            'store'   => 'admin.fines.store',
+            'update'  => 'admin.fines.update',
+            'destroy' => 'admin.fines.destroy',
+        ]);
 
-        Route::get('/laporan', function () {
-            return view('admin.laporan');
-        })->name('admin.reports');
+        Route::get('/laporan', [ReportController::class, 'index'])->name('admin.reports');
+        Route::get('/laporan/export/{id}', [ReportController::class, 'exportPdf'])->name('admin.reports.export');
     });
 });

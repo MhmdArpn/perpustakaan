@@ -30,9 +30,10 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if ($user->role === 'admin') {
+                session()->forget('url.intended');
                 return redirect()->intended('/admin');
             }
-
+            session()->forget('url.intended');
             return redirect()->intended('/member');
         }
 

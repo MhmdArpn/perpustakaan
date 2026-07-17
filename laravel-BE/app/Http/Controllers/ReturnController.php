@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Report;
 use App\Models\ReturnBook;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -119,6 +120,20 @@ class ReturnController extends Controller
         if ($loan->book->status === 'borrowed' && $loan->book->available_copies > 0) {
             $loan->book->update(['status' => 'available']);
         }
+        $today = Carbon::today()->toDateString();
+    
+        $totalKembaliHariIni = ReturnBook::whereDate('returned_at', $today)->count();
+
+        Report::updateOrCreate(
+            [
+                'type' => 'pengembalian',
+                'report_date' => $today,
+            ],
+            [
+                'total_summary' => $totalKembaliHariIni . ' Buku Dikembalikan',
+                'status' => 'selesai'
+            ]
+        );
 
         return redirect()->route('admin.returns')->with('success', 'Transaksi pengembalian berhasil diproses dan stok buku telah diperbarui!');
     }

@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('fines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('loan_id')->constrained('loans')->cascadeOnDelete();
-            $table->decimal('amount', 10, 2)->default(0);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
+            $table->integer('late_days')->default(0);
+            $table->decimal('amount', 10, 2);
             $table->enum('status', ['unpaid', 'paid'])->default('unpaid');
-            $table->date('paid_at')->nullable();
-            $table->text('description')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
