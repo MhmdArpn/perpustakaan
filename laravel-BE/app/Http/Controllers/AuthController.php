@@ -28,13 +28,18 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-
-            if ($user->role === 'admin') {
-                session()->forget('url.intended');
-                return redirect()->intended('/admin');
-            }
             session()->forget('url.intended');
-            return redirect()->intended('/member');
+            if ($user->role === 'admin') {
+                return redirect()->intended('/admin');
+            }elseif ($user->role === 'member' && $user->status !== 'active') {
+                Auth::logout();
+                return redirect()->back()->with('error', 'Akun Anda belum aktif. Silakan hubungi admin.');
+            } elseif ($user->role === 'member') {
+                return redirect()->intended('/member');
+            } else {
+                Auth::logout();
+                return redirect()->back()->with('error', 'Peran pengguna tidak valid.');
+            }
         }
 
         return back()->withErrors([

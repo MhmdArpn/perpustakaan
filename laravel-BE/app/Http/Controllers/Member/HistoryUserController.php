@@ -23,7 +23,7 @@ class HistoryUserController extends Controller
 
         // Kalkulasi Statistik Ringkasan
         $totalBorrowed = Loan::where('user_id', $userId)->count();
-        $returnedCount = Loan::where('user_id', $userId)->where('status', 'dikembalikan')->count();
+        $returnedCount = Loan::where('user_id', $userId)->where('status', 'selesai')->count();
         
         // Peminjaman aktif yang tanggal deadlinenya sudah lewat dari hari ini
         $overdueCount = Loan::where('user_id', $userId)

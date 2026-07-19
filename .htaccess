@@ -1,5 +1,9 @@
 <IfModule mod_rewrite.c>
+
     RewriteEngine On
+
     # Alihkan semua request ke folder laravel-BE/public/
+
     RewriteRule ^(.*)$ laravel-BE/public/$1 [L]
+
 </IfModule>

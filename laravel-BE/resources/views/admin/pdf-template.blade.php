@@ -63,7 +63,7 @@
                     <td>{{ $item->book->title ?? 'Buku Terhapus' }}</td>
                     <td>
                         @if($report->type === 'peminjaman')
-                            Tgl Pinjam: {{ $item->created_at->format('d/m/Y') }}
+                            Tgl Pinjam: {{ $item->created_at->format('d F Y') }}
                         @elseif($report->type === 'pengembalian')
                             Kondisi: {{ ucfirst($item->condition) }}
                         @else

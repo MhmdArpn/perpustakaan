@@ -31,15 +31,19 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware(['auth', 'role:member'])->group(function () {
     Route::prefix('member')->group(function () {
         Route::get('/', [DashboardUserController::class, 'index'])->name('user.dashboard');
+        Route::get('/laporan-peminjaman', [DashboardUserController::class, 'downloadLaporan'])->name('user.laporan');
         Route::get('/cari-buku', [BookSearchController::class, 'index'])->name('user.cari-buku');
         Route::get('/kategori', [CategoryUserController::class, 'index'])->name('user.kategori');
         Route::get('/peminjaman', [LoanUserController::class, 'index'])->name('user.peminjaman');
         Route::post('/pinjam/{id}', [DashboardUserController::class, 'pinjamBuku'])->name('user.pinjam');
+        Route::put('/perpanjang/{id}', [LoanUserController::class, 'extend'])->name('user.perpanjang');
         Route::get('/riwayat', [HistoryUserController::class, 'index'])->name('user.riwayat');
         Route::get('/wishlist', [WishlistUserController::class, 'index'])->name('user.wishlist');
         Route::get('/profile', [ProfileUserController::class, 'index'])->name('user.profile');
         Route::put('/profile', [ProfileUserController::class, 'update'])->name('user.profile.update');
         Route::patch('/profile/password', [ProfileUserController::class, 'updatePassword'])->name('user.profile.update-password');
+        Route::post('/wishlist/toggle/{book_id}', [WishlistUserController::class, 'toggle'])->name('user.wishlist.toggle');
+        Route::delete('/wishlist/remove/{book_id}', [WishlistUserController::class, 'destroy'])->name('user.wishlist.destroy');
     });
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fine;
 use App\Models\Loan;
 use App\Models\Report;
 use App\Models\ReturnBook;
@@ -108,6 +109,14 @@ class ReturnController extends Controller
             'fine' => $fine,
             'status' => $status,
             'condition' => $request->condition
+        ]);
+
+        Fine::create([
+            'user_id' => $loan->user_id,
+            'book_id' => $loan->book_id,
+            'late_days' => $lateDays,
+            'amount' => $fine,
+            'status' => $fine > 0 ? 'unpaid' : 'paid',
         ]);
 
         // Update status di tabel peminjaman (loans) menjadi 'selesai'

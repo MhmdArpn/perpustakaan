@@ -45,7 +45,7 @@
 <!-- FILTER STATUS -->
 <div class="filter-bar" style="background: #fff; padding: 16px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 20px; display: flex; gap: 12px; align-items: center;">
     <span style="font-weight: bold; color: #555;"><i class="fa-solid fa-filter"></i> Filter Status:</span>
-    <form action="{{ route('user.reports') }}" method="GET" id="filterForm" style="display: flex; gap: 10px;">
+    <form action="#" method="GET" id="filterForm" style="display: flex; gap: 10px;">
         <select name="status" onchange="document.getElementById('filterForm').submit()" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; outline: none; cursor: pointer;">
             <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>Semua Riwayat</option>
             <option value="dipinjam" {{ request('status') == 'dipinjam' ? 'selected' : '' }}>Sedang Dipinjam</option>

@@ -87,7 +87,8 @@
                 Selamat datang di Sistem Perpustakaan Online.
                 Temukan berbagai koleksi buku digital terbaru hari ini.
             </p>
-            <button onclick="document.getElementById('menuSearch').focus()">
+            <button onclick="document.getElementById('menuSearch').focus()"
+                style="padding: 10px 20px; font-size: 1rem; border: none; background-color: #008cff; color: white; border-radius: 5px; cursor: pointer;">
                 Mulai Jelajah
             </button>
         </div>
@@ -151,7 +152,7 @@
                 <h3>{{ $book->title }}</h3>
                 <p>{{ $book->author ?? 'Penulis Tidak Diketahui' }}</p>
 
-                @if (($book->qty ?? 0) > 0)
+                @if (($book->available_copies ?? 0) > 0)
                     <!-- Form untuk mengirimkan request peminjaman secara aman -->
                     <form action="{{ route('user.pinjam', $book->id) }}" method="POST"
                         style="display: inline; width: 100%;">
@@ -177,10 +178,12 @@
     <div class="table-card">
         <div class="table-header">
             <h3>Riwayat Peminjaman</h3>
-            <button>
-                <i class="fa-solid fa-download"></i>
-                Laporan
-            </button>
+            <a href="{{ route('user.laporan') }}" class="btn-laporan" style="text-decoration: none;">
+                <button style="cursor: pointer;">
+                    <i class="fa-solid fa-download"></i>
+                    Laporan
+                </button>
+            </a>
         </div>
 
         <table>
@@ -205,7 +208,9 @@
                                 @else
                                     <span class="badge info">Dipinjam</span>
                                 @endif
-                            @elseif($log->status == 'dikembalikan')
+                            @elseif($log->checkFine == 'unpaid')
+                                <span class="badge warning">Dikembalikan | Denda Belum Dibayar</span>
+                            @elseif($log->checkFine == 'paid')
                                 <span class="badge success">Dikembalikan</span>
                             @else
                                 <span class="badge danger">Terlambat</span>

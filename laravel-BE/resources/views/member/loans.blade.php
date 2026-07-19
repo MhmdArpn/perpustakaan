@@ -117,7 +117,7 @@
                 @endif
                 
                 <!-- Form Perpanjangan Buku -->
-                <form action="{{ route('user.loans.extend', $loan->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin memperpanjang peminjaman buku ini?')">
+                <form action="{{ route('user.perpanjang', $loan->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin memperpanjang peminjaman buku ini?')">
                     @csrf
                     @method('PUT')
                     <button type="submit" class="btn-primary small" {{ $isOverdue ? 'disabled style=background:#ccc;cursor:not-allowed;' : '' }}>
@@ -136,7 +136,7 @@
 <!-- SEPARATOR RIWAYAT TERBARU -->
 <div class="section-footer" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h3>Riwayat Terbaru (Sudah Dikembalikan)</h3>
-    <a href="{{ route('user.dashboard') }}" class="btn-outline" style="text-decoration: none;">Ke Dashboard</a>
+    <a href="{{ route('user.riwayat') }}" class="btn-outline" style="text-decoration: none;">Ke Riwayat Peminjaman</a>
 </div>
 
 <!-- BARIS RIWAYAT TERBARU -->
@@ -157,6 +157,9 @@
             <div>
                 <strong style="display: block; font-size: 0.95rem; color: #333; margin-bottom: 4px;">{{ $hBook->title ?? 'Buku Dihapus' }}</strong>
                 <span style="font-size: 0.8rem; color: #777;">Dikembalikan {{ \Carbon\Carbon::parse($history->updated_at)->format('d M Y') }}</span>
+                @if($history->checkFine && $history->checkFine === 'unpaid')
+                    <span class="badge-red" style="display: inline-block; margin-top: 4px; font-size: 0.75rem;">Denda Belum Dibayar</span>
+                @endif
             </div>
         </div>
     @empty

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Member Dashboard') - Perpustakaan</title>
 
-    @vite(['src/main.js'])
+    <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
@@ -32,12 +33,12 @@
                     <!-- Daftar menu sistem user -->
                     <datalist id="systemMenus">
                         <option value="Dashboard" data-url="{{ route('user.dashboard') }}">
-                        <option value="Cari Buku" data-url="#">
-                        <option value="Kategori Buku" data-url="#">
-                        <option value="Peminjaman Saya" data-url="#">
-                        <option value="Riwayat" data-url="#">
-                        <option value="Wishlist" data-url="#">
-                        <option value="Profile" data-url="#">
+                        <option value="Cari Buku" data-url="{{ route('user.cari-buku') }}">
+                        <option value="Kategori Buku" data-url="{{ route('user.kategori') }}">
+                        <option value="Peminjaman Saya" data-url="{{ route('user.peminjaman') }}">
+                        <option value="Riwayat" data-url="{{ route('user.riwayat') }}">
+                        <option value="Wishlist" data-url="{{ route('user.wishlist') }}">
+                        <option value="Profile" data-url="{{ route('user.profile') }}">
                     </datalist>
                 </div>
 
@@ -78,7 +79,10 @@
                 </div>
 
                 <div class="notif">
-                    <i class="fa-solid fa-gear"></i>
+                    <a href="{{ route('user.profile') }}">
+                        <i class="fa-solid fa-gear">
+                        </i>
+                    </a>
                 </div>
                 <div class="avatar">
                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -89,6 +93,9 @@
         @yield('content')
 
     </div>
+    <script src="{{ asset('assets/script.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -117,6 +124,26 @@
                 }
             });
         });
+
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right", // Muncul di kanan atas
+            "timeOut": "4000",
+        };
+
+        // Mengambil flash message dari Controller Laravel
+        @if(Session::has('success'))
+            toastr.success("{{ Session::get('success') }}");
+        @endif
+
+        @if(Session::has('error'))
+            toastr.error("{{ Session::get('error') }}");
+        @endif
+
+        @if(Session::has('warning'))
+            toastr.warning("{{ Session::get('warning') }}");
+        @endif
     </script>
 </body>
 

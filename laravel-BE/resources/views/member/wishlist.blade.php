@@ -58,7 +58,7 @@
     @forelse($wishlists as $wishlist)
         @php
             $book = $wishlist->book;
-            $isAvailable = ($book->qty ?? 0) > 0;
+            $isAvailable = ($book->available_copies ?? 0) > 0;
             $categorySlug = isset($book->category) ? Str::slug($book->category->name) : 'umum';
         @endphp
 
@@ -98,9 +98,8 @@
             <!-- Tombol Aksi Peminjaman -->
             <div style="margin-top: 12px;">
                 @if($isAvailable)
-                    <form action="{{ route('user.loans.store') }}" method="POST">
+                    <form action="{{ route('user.pinjam', $book->id) }}" method="POST">
                         @csrf
-                        <input type="hidden" name="book_id" value="{{ $book->id }}">
                         <button type="submit" class="btn-primary" style="width: 100%; padding: 10px; border-radius: 6px; font-weight: bold;">
                             Pinjam Sekarang
                         </button>

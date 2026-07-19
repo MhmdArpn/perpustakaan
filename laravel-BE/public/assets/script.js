@@ -49,17 +49,6 @@ if (toggle && password) {
     });
 }
 
-document.querySelectorAll('.book-card form').forEach(form => {
-    form.addEventListener('submit', () => {
-        const button = form.querySelector('button[type="submit"]');
-        if (!button || button.disabled) return;
-
-        button.textContent = 'Diajukan';
-        button.classList.add('is-booked');
-        button.disabled = true;
-    });
-});
-
 const searchInput = document.querySelector('.search-panel input');
 const categoryFilter = document.querySelector('#filterCategory');
 const statusFilter = document.querySelector('#filterStatus');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
+use App\Models\Fine;
 use App\Models\Loan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,100 +11,63 @@ use Illuminate\Support\Facades\Auth;
 
 class LoanUserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $userId = Auth::id();
-        $statusFilter = $request->get('status');
 
-        $query = Loan::with('book')->where('user_id', $userId);
+        // 1. Ambil data peminjaman yang masih aktif berjalan
+        $activeLoans = Loan::with('book')
+            ->where('user_id', $userId)
+            ->where('status', 'dipinjam')
+            ->get();
 
-        if ($statusFilter && $statusFilter !== 'all') {
-            $query->where('status', $statusFilter);
+        // 2. Ambil riwayat peminjaman yang sudah dikembalikan
+        $returnedHistory = Loan::with('book')
+            ->where('user_id', $userId)
+            ->where('status', 'selesai')
+            ->latest()
+            ->take(4)
+            ->get();
+        
+        foreach ($returnedHistory as $loan) {
+            $fine = Fine::where('user_id', Auth::id())
+                ->where('book_id', $loan->book_id)
+                ->first();
+            $loan->checkFine = $fine ? $fine->status : 'paid';
         }
 
-        $loans = $query->orderBy('created_at', 'desc')->get();
+        // 3. Kalkulasi data counter statistik dashboard peminjaman
+        $borrowingCount = $activeLoans->count();
+        $returnedCount = Loan::where('user_id', $userId)->where('status', 'selesai')->count();
+        
+        // Cek peminjaman aktif mana yang tanggal deadlinenya sudah terlewati
+        $overdueCount = $activeLoans->filter(function($loan) {
+            return Carbon::parse($loan->due_at)->isPast();
+        })->count();
 
-        // Statistik ringkas berdasarkan status Anda
-        $totalBorrowed = Loan::where('user_id', $userId)->count();
-        $activeLoanCount = Loan::where('user_id', $userId)->where('status', 'dipinjam')->count();
-        $overdueCount = Loan::where('user_id', $userId)
-            ->where('status', 'dipinjam')
-            ->where('due_at', '<', now())
-            ->count();
-
-        return view('member.reports', compact('loans', 'totalBorrowed', 'activeLoanCount', 'overdueCount'));
+        return view('member.loans', compact(
+            'activeLoans', 
+            'returnedHistory', 
+            'borrowingCount', 
+            'returnedCount', 
+            'overdueCount'
+        ));
     }
 
-    // 2. PROSES PINJAM BUKU LANGSUNG
-    public function store(Request $request)
-    {
-        $request->validate([
-            'book_id' => 'required|exists:books,id',
-        ]);
-
-        $userId = Auth::id();
-        $book = Book::findOrFail($request->book_id);
-
-        // Cek stok buku
-        if ($book->qty <= 0) {
-            return redirect()->back()->with('error', 'Maaf, stok buku ini sedang kosong!');
-        }
-
-        // Cek apakah user sedang meminjam buku yang sama
-        $existingLoan = Loan::where('user_id', $userId)
-            ->where('book_id', $book->id)
-            ->where('status', 'dipinjam')
-            ->first();
-
-        if ($existingLoan) {
-            return redirect()->back()->with('error', 'Anda sedang meminjam buku ini!');
-        }
-
-        // Buat peminjaman baru (Durasi pinjam: 7 hari)
-        Loan::create([
-            'user_id' => $userId,
-            'book_id' => $book->id,
-            'loaned_at' => Carbon::now()->toDateString(),
-            'due_at' => Carbon::now()->addDays(7)->toDateString(),
-            'status' => 'dipinjam',
-            'notes' => 'Peminjaman mandiri via aplikasi.'
-        ]);
-
-        // Kurangi stok buku
-        $book->decrement('qty');
-
-        return redirect()->back()->with('success', 'Buku berhasil dipinjam! Silakan ambil fisik buku di meja pustakawan.');
-    }
-
-    // 3. PROSES PENGEMBALIAN BUKU (MEMBER)
-    public function returnBook($id)
+    // Aksi Perpanjang Buku (Menambah batas pengembalian buku + 7 Hari)
+    public function extend($id)
     {
         $loan = Loan::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
-        if ($loan->status === 'dipinjam') {
-            $today = Carbon::now();
-            $status = 'selesai';
-            $noteMessage = 'Dikembalikan tepat waktu.';
-
-            // Evaluasi keterlambatan secara dinamis
-            if ($today->gt($loan->due_at)) {
-                $status = 'terlambat';
-                $hariTerlambat = $today->diffInDays($loan->due_at);
-                $noteMessage = "Terlambat mengembalikan selama {$hariTerlambat} hari.";
-            }
-
-            $loan->update([
-                'status' => $status,
-                'returned_at' => $today->toDateString(),
-                'notes' => $noteMessage
-            ]);
-
-            // Kembalikan stok buku
-            $loan->book->increment('qty');
-
-            return redirect()->back()->with('success', 'Buku berhasil dikembalikan! ' . ($status === 'terlambat' ? $noteMessage : 'Terima kasih telah mengembalikan tepat waktu.'));
+        // Pastikan buku belum terlambat untuk diperpanjang
+        if (Carbon::parse($loan->due_at)->isPast()) {
+            return redirect()->back()->with('error', 'Buku yang sudah terlambat tidak dapat diperpanjang secara mandiri.');
         }
 
-        return redirect()->back()->with('error', 'Buku ini sudah dikembalikan sebelumnya.');
+        // Tambahkan durasi deadline 7 hari lagi
+        $loan->due_at = Carbon::parse($loan->due_at)->addDays(7);
+        $loan->save();
+
+        return redirect()->back()->with('success', 'Masa peminjaman buku berhasil diperpanjang 7 hari!');
     }
 }

@@ -16,8 +16,8 @@ class ProfileUserController extends Controller
         $user = Auth::user();
 
         // Mengambil statistik riil perpustakaan milik user
-        $totalReadCount = Loan::where('user_id', $user->id)->where('status', 'returned')->count();
-        $activeLoanCount = Loan::where('user_id', $user->id)->where('status', 'borrowed')->count();
+        $totalReadCount = Loan::where('user_id', $user->id)->where('status', 'selesai')->count();
+        $activeLoanCount = Loan::where('user_id', $user->id)->where('status', 'dipinjam')->count();
         $wishlistCount = Wishlist::where('user_id', $user->id)->count();
         
         // Asumsi jika kolom 'due_date' melewati tanggal sekarang dan belum dikembalikan

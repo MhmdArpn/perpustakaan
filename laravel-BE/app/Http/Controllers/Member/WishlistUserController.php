@@ -25,7 +25,7 @@ class WishlistUserController extends Controller
         // 3. Hitung statistik kartu ringkasan
         $wishlistCount = $wishlists->count();
         $availableCount = $wishlists->filter(function($w) {
-            return ($w->book->qty ?? 0) > 0;
+            return ($w->book->available_copies ?? 0) > 0;
         })->count();
         $borrowedCount = $wishlistCount - $availableCount;
 
@@ -39,5 +39,26 @@ class WishlistUserController extends Controller
         $wishlist->delete();
 
         return redirect()->back()->with('success', 'Buku berhasil dihapus dari daftar wishlist!');
+    }
+
+    public function toggle($bookId)
+    {
+        $userId = Auth::id();
+
+        // Cari apakah buku ini sudah ada di wishlist user
+        $wishlist = Wishlist::where('user_id', $userId)->where('book_id', $bookId)->first();
+
+        if ($wishlist) {
+            // Jika sudah ada, hapus dari wishlist
+            $wishlist->delete();
+            return response()->json(['status' => 'removed', 'message' => 'Buku dihapus dari wishlist']);
+        } else {
+            // Jika belum ada, tambahkan ke wishlist
+            Wishlist::create([
+                'user_id' => $userId,
+                'book_id' => $bookId
+            ]);
+            return response()->json(['status' => 'added', 'message' => 'Buku ditambahkan ke wishlist']);
+        }
     }
 }
