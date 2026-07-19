@@ -14,6 +14,60 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Dumping structure for table perpustakaan.users
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('active','pending','inactive') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
+  `membership_type` enum('regular','premium') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'regular',
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'member',
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `api_token` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  UNIQUE KEY `users_api_token_unique` (`api_token`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table perpustakaan.users: ~11 rows (approximately)
+INSERT INTO `users` (`id`, `name`, `email`, `status`, `membership_type`, `role`, `phone`, `address`, `email_verified_at`, `password`, `remember_token`, `api_token`, `created_at`, `updated_at`) VALUES
+	(1, 'Admin Perpustakaan', 'admin@perpustakaan.test', 'active', 'regular', 'admin', '081234567890', 'Jalan Merdeka No. 1', '2026-07-16 09:01:06', '$2y$12$PlTLf9FxknW4k2dQcdpJZ.rsJZ2ybas5EOjyWScEF0m7x.fakacT.', 'tCbrtC7erRqhFfRzhBF12s4u8JnP0Eeainz74A04YbAi98xZ7OPnzM1eREDd', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(2, 'Mrs. Claudine Bogisich DVM', 'turner.dovie@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'nC2OlEcbtI', NULL, '2026-07-16 09:01:06', '2026-07-17 01:50:42'),
+	(3, 'Mrs. Nikita Nienow', 'rachelle.connelly@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'K6aN1YZ60z', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(4, 'Braeden Dooley', 'rherzog@example.net', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '69aVo9gvoT', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(5, 'Norris Heaney', 'eschmidt@example.net', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'db9dbreBpF', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(6, 'Prof. Jovan Rutherford Jr.', 'price.doug@example.com', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'UuLQdIjBc5', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(7, 'Dr. Brett Quigley', 'efren.bogan@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '67cJQS9qpH', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(8, 'Miss Hilda Gislason', 'gusikowski.hosea@example.net', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'gw6WJ7uCSA', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(9, 'Brennon Towne', 'fabiola98@example.com', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'rRpxHbYgFX', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(10, 'Mr. Brannon Hayes DDS', 'mraz.mable@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '4s3YbanY1P', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(11, 'Mrs. Danika Murazik PhD', 'rkemmer@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '9Z0YIkVKMQ', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(12, 'Tesetr', '123456@perpustakaan.test', 'active', 'regular', 'member', '12345678', NULL, NULL, '$2y$12$zcJtZC6IHKW0qn/UxSUpBewwa70DY8U8PrMu5daQSVPydKo/Qde2C', NULL, NULL, '2026-07-17 01:54:18', '2026-07-17 01:54:18');
+
+-- Dumping structure for table perpustakaan.categories
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table perpustakaan.categories: ~4 rows (approximately)
+INSERT INTO `categories` (`id`, `name`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, 'Teknologi', 'Buku teknologi dan pemrograman.', 1, '2026-07-16 09:01:06', '2026-07-16 17:41:46'),
+	(2, 'Sains', 'Buku tentang sains dan pengetahuan.', 1, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(3, 'Novel', 'Koleksi novel fiksi populer.', 1, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
+	(4, 'Pendidikan', 'Buku referensi dan pendidikan.', 1, '2026-07-16 09:01:06', '2026-07-16 09:01:06');
+
 -- Dumping structure for table perpustakaan.books
 CREATE TABLE IF NOT EXISTS `books` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -36,24 +90,6 @@ CREATE TABLE IF NOT EXISTS `books` (
 INSERT INTO `books` (`id`, `title`, `author`, `category_id`, `description`, `status`, `total_copies`, `available_copies`, `published_year`, `created_at`, `updated_at`) VALUES
 	(1, 'Algoritma Dasar', 'Abdul Kadir', 1, 'Pengantar algoritma dasar.', 'available', 5, 4, '2022', '2026-07-16 09:01:06', '2026-07-18 23:50:42'),
 	(2, 'Basis Data', 'Rosa Shalahuddin', 1, 'Dasar-dasar basis data.', 'available', 4, 4, '2021', '2026-07-16 09:01:06', '2026-07-18 23:41:08');
-
--- Dumping structure for table perpustakaan.borrowings
-CREATE TABLE IF NOT EXISTS `borrowings` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint unsigned NOT NULL,
-  `book_id` bigint unsigned NOT NULL,
-  `borrow_date` date NOT NULL,
-  `due_date` date NOT NULL,
-  `return_date` date DEFAULT NULL,
-  `status` enum('dipinjam','dikembalikan','terlambat') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'dipinjam',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `borrowings_user_id_foreign` (`user_id`),
-  KEY `borrowings_book_id_foreign` (`book_id`),
-  CONSTRAINT `borrowings_book_id_foreign` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `borrowings_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table perpustakaan.borrowings: ~0 rows (approximately)
 
@@ -78,24 +114,6 @@ CREATE TABLE IF NOT EXISTS `cache_locks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table perpustakaan.cache_locks: ~0 rows (approximately)
-
--- Dumping structure for table perpustakaan.categories
-CREATE TABLE IF NOT EXISTS `categories` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table perpustakaan.categories: ~4 rows (approximately)
-INSERT INTO `categories` (`id`, `name`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
-	(1, 'Teknologi', 'Buku teknologi dan pemrograman.', 1, '2026-07-16 09:01:06', '2026-07-16 17:41:46'),
-	(2, 'Sains', 'Buku tentang sains dan pengetahuan.', 1, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(3, 'Novel', 'Koleksi novel fiksi populer.', 1, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(4, 'Pendidikan', 'Buku referensi dan pendidikan.', 1, '2026-07-16 09:01:06', '2026-07-16 09:01:06');
 
 -- Dumping structure for table perpustakaan.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
@@ -288,47 +306,6 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_user_id_index` (`user_id`),
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table perpustakaan.sessions: ~2 rows (approximately)
-INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('90XqHb3yCCa4CY4FV3ojwIZi0szsDcvqGePe67uy', 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiaEpTVFM1YkdRVThGVFNQd0lWWmNobnFZVXBTZEVOS1VZeWRmM3h1ayI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjMzOiJodHRwOi8vbG9jYWxob3N0L2FkbWluL3BlbWluamFtYW4iO3M6NToicm91dGUiO3M6MTE6ImFkbWluLmxvYW5zIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1784418068),
-	('woy3yDyDbuIZK4UwTpw1dnuq8iTqZhFQuj6wziTl', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiMzNzdG9ZaHFaaGlFTGhTNmdrWjdIWjNBeDlZNklBTTNnWjRIVkZEMyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vbG9jYWxob3N0L21lbWJlci9wcm9maWxlIjtzOjU6InJvdXRlIjtzOjEyOiJ1c2VyLnByb2ZpbGUiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMjt9', 1784419454);
-
--- Dumping structure for table perpustakaan.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('active','pending','inactive') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
-  `membership_type` enum('regular','premium') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'regular',
-  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'member',
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `api_token` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`),
-  UNIQUE KEY `users_api_token_unique` (`api_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table perpustakaan.users: ~11 rows (approximately)
-INSERT INTO `users` (`id`, `name`, `email`, `status`, `membership_type`, `role`, `phone`, `address`, `email_verified_at`, `password`, `remember_token`, `api_token`, `created_at`, `updated_at`) VALUES
-	(1, 'Admin Perpustakaan', 'admin@perpustakaan.test', 'active', 'regular', 'admin', '081234567890', 'Jalan Merdeka No. 1', '2026-07-16 09:01:06', '$2y$12$PlTLf9FxknW4k2dQcdpJZ.rsJZ2ybas5EOjyWScEF0m7x.fakacT.', 'tCbrtC7erRqhFfRzhBF12s4u8JnP0Eeainz74A04YbAi98xZ7OPnzM1eREDd', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(2, 'Mrs. Claudine Bogisich DVM', 'turner.dovie@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'nC2OlEcbtI', NULL, '2026-07-16 09:01:06', '2026-07-17 01:50:42'),
-	(3, 'Mrs. Nikita Nienow', 'rachelle.connelly@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'K6aN1YZ60z', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(4, 'Braeden Dooley', 'rherzog@example.net', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '69aVo9gvoT', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(5, 'Norris Heaney', 'eschmidt@example.net', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'db9dbreBpF', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(6, 'Prof. Jovan Rutherford Jr.', 'price.doug@example.com', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'UuLQdIjBc5', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(7, 'Dr. Brett Quigley', 'efren.bogan@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '67cJQS9qpH', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(8, 'Miss Hilda Gislason', 'gusikowski.hosea@example.net', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'gw6WJ7uCSA', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(9, 'Brennon Towne', 'fabiola98@example.com', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', 'rRpxHbYgFX', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(10, 'Mr. Brannon Hayes DDS', 'mraz.mable@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '4s3YbanY1P', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(11, 'Mrs. Danika Murazik PhD', 'rkemmer@example.org', 'active', 'regular', 'member', NULL, NULL, '2026-07-16 09:01:06', '$2y$12$mww9WGfnsWAzZaNyz0hY0.J7PTgELtf6hPZpLBWzlJp.zCEs504fe', '9Z0YIkVKMQ', NULL, '2026-07-16 09:01:06', '2026-07-16 09:01:06'),
-	(12, 'Tesetr', '123456@perpustakaan.test', 'active', 'regular', 'member', '12345678', NULL, NULL, '$2y$12$zcJtZC6IHKW0qn/UxSUpBewwa70DY8U8PrMu5daQSVPydKo/Qde2C', NULL, NULL, '2026-07-17 01:54:18', '2026-07-17 01:54:18');
 
 -- Dumping structure for table perpustakaan.wishlists
 CREATE TABLE IF NOT EXISTS `wishlists` (
