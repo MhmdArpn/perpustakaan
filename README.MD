@@ -8,7 +8,7 @@
 
 ---
 
-Ikuti langkah-langkah di bawah ini untuk memasang dan menjalankan aplikasi Perpustakaan di komputer lokal anda.
+**Ikuti langkah-langkah di bawah ini untuk memasang dan menjalankan aplikasi Perpustakaan di komputer lokal anda.**
 
 ---
 
