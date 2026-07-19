@@ -1,5 +1,13 @@
 # Panduan Instalasi dan Penggunaan Aplikasi Perpustakaan
 
+### 👥 Daftar Anggota Kelompok
+**Kelompok 4 - Layanan Web**
+1. **Muhammad Arifin** (2303010219)
+2. **Dhika Dwi Hanifa** (2303010219)
+3. **Muhammad Ghifar** (2303010226)
+
+---
+
 Ikuti langkah-langkah di bawah ini untuk memasang dan menjalankan aplikasi Perpustakaan di komputer lokal anda.
 
 ---
